@@ -32,9 +32,23 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		return \App\User::all();
+		$user = $request->only('name','email','password');
+		$v = \Validator::make($request->all(), [
+	        'email' => 'required|unique:users',
+			'name' => 'required',
+			'password' => 'required',
+	    ]);
+		
+	    if ($v->fails())
+	    {
+	        return response($v->errors(),500);
+	    }
+		
+		$user['password'] = bcrypt($user['password']);
+		\App\User::create($user);
+		return response('Create user success.',201);
 	}
 
 	/**
@@ -65,9 +79,14 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $request)
 	{
-		//
+		$user = \App\User::find($id);
+		if($request->has('name')) $user->name = $request->input('name');
+		if($request->has('eamil')) $user->eamil = $request->input('eamil');
+		if($request->has('password')) $user->password = bcrypt($request->input('password'));
+		$user->save();
+		return response('Update user success.',200);
 	}
 
 	/**
@@ -78,7 +97,8 @@ class UserController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		return \App\User::findOrFail($id)->delete();
+		\App\User::find($id)->delete();
+		return response('Delete user success.',200);
 	}
 
 }

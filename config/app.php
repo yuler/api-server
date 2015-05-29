@@ -149,7 +149,7 @@ return [
 		'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
 
 		// 'Dingo\Api\Provider\ApiServiceProvider',
-		'Dingo\Api\Provider\LaravelServiceProvider',
+		// 'Dingo\Api\Provider\LaravelServiceProvider',
 		// 'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
 	],
 

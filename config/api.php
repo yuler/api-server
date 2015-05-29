@@ -122,9 +122,22 @@ return [
     */
 
     'auth' => [
-        'basic' => function ($app) {
+        /*'basic' => function ($app) {
             return new Dingo\Api\Auth\Provider\Basic($app['auth']);
-        },
+        },*/
+        'oauth' => function ($app) {
+            $provider = new Dingo\Api\Auth\Provider\OAuth2 ($app['oauth2-server.authorizer']->getChecker());
+
+            $provider->setUserResolver(function ($id) {
+                // Logic to return a user by their ID.
+            });
+
+            $provider->setClientResolver(function ($id) {
+                // Logic to return a client by their ID.
+            });
+
+            return $provider;
+        }
     ],
 
     /*

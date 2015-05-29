@@ -33,18 +33,22 @@ Route::controllers([
 ]);*/
 
 // Get an instance of the API router so we can use it in the routes.php file
-$api = app('api.router');
+// $api = app('api.router');
 
-$api->version('v1',['prefix' => 'api', 'protected' => true, 'namespace'=> 'App\Http\Controllers'], function ($api) {
-    $api->resource('user','UserController');
+// $api->version('v1',['prefix' => 'api', 'protected' => true,
+// 		 'providers'=>'oauth', 'namespace'=> 'App\Http\Controllers'], 
+// 	function ($api) {
+//     $api->resource('user','UserController');
+// });
+
+Route::post('oauth/access_token', function() {
+    return Response::json(Authorizer::issueAccessToken());
 });
-
+// $router->resource('user', 'UserController');
 $router->group(['before' => 'oauth'], function($router)
 {
 	$router->resource('user', 'UserController');
 });
 
 
-Route::post('oauth/access_token', function() {
-    return Response::json(Authorizer::issueAccessToken());
-});
+
